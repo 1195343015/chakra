@@ -1,5 +1,5 @@
 # latest news
-截至11.17，同步了chakra的最新版本
+截至2025.2.11，同步了chakra的最新版本
 
 # chakra-dts
 模型表达提取工具
