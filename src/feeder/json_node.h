@@ -36,6 +36,7 @@ class JSONNode {
   uint32_t comm_src;
   uint32_t comm_dst;
   uint32_t comm_tag;
+  std::string comm_desc;
 
  public:
   std::vector<uint64_t> data_deps{};
@@ -66,6 +67,7 @@ class JSONNode {
   uint32_t getCommSrc() const;
   uint32_t getCommDst() const;
   uint32_t getCommTag() const;
+  std::string getCommDesc() const;
   void addDepUnresolvedParentID(uint64_t node_id);
   std::vector<uint64_t> getDepUnresolvedParentIDs();
   void setDepUnresolvedParentIDs(
@@ -81,7 +83,8 @@ class JSONNode {
         tensor_size == other.tensor_size && comm_type == other.comm_type &&
         comm_priority == other.comm_priority && comm_size == other.comm_size &&
         comm_src == other.comm_src && comm_dst == other.comm_dst &&
-        comm_tag == other.comm_tag && data_deps == other.data_deps &&
+        comm_tag == other.comm_tag && comm_desc == other.comm_desc &&
+        data_deps == other.data_deps &&
         dep_unresolved_parent_ids_json ==
         other.dep_unresolved_parent_ids_json &&
         children_vec_json == other.children_vec_json &&
@@ -105,6 +108,7 @@ class JSONNode {
       comm_src = other.comm_src;
       comm_dst = other.comm_dst;
       comm_tag = other.comm_tag;
+      comm_desc = other.comm_desc;
       data_deps = other.data_deps;
       dep_unresolved_parent_ids_json = other.dep_unresolved_parent_ids_json;
       children_vec_json = other.children_vec_json;

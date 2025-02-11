@@ -25,6 +25,7 @@ JSONNode::JSONNode(const JSONNode& t) {
     comm_src = t.comm_src;
     comm_dst = t.comm_dst;
     comm_tag = t.comm_tag;
+    comm_desc = t.comm_desc;
   }
 }
 
@@ -93,6 +94,10 @@ JSONNode::JSONNode(json data, uint64_t id) {
       comm_tag = data["workload_graph"][id]["comm_tag"];
     } catch (...) {
     }
+    try {
+      comm_desc = data["workload_graph"][id]["comm_desc"];
+    } catch (...) {
+    }
   }
 }
 
@@ -159,6 +164,11 @@ uint32_t JSONNode::getCommDst() const {
 // Comm tag
 uint32_t JSONNode::getCommTag() const {
   return comm_tag;
+}
+
+// Comm desc
+std::string JSONNode::getCommDesc() const {
+  return comm_desc;
 }
 
 // Dependency unresolved parent IDs
