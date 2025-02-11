@@ -87,7 +87,8 @@ class PyTorchNode:
             node_data (Dict[str, Any]): The node data to be parsed.
         """
         if self.schema in self.SUPPORTED_VERSIONS:
-            self._parse_data_1_0_3_chakra_0_0_4(node_data)
+            if self.schema in ["1.0.2-chakra.0.0.4", "1.0.3-chakra.0.0.4", "1.1.0-chakra.0.0.4", "1.1.1-chakra.0.0.4"]:
+                self._parse_data_1_0_3_chakra_0_0_4(node_data)
         else:
             raise ValueError(
                 f"Unsupported schema version '{self.schema}'. Please check if the schema version is in the list of "

@@ -8,7 +8,20 @@ ETFeederNode::ETFeederNode(std::shared_ptr<ChakraProtoMsg::Node> node) {
   this->id_ = node->id();
   this->name_ = node->name();
   this->runtime_ = node->duration_micros();
-  this->is_cpu_op_ = true;
+  this->is_cpu_op_ = 0;
+
+  if (node->has_inputs()) {
+    this->inputs_values_ = static_cast<string>(node->inputs().values());
+    this->inputs_shapes_ = static_cast<string>(node->inputs().shapes());
+    this->inputs_types_ = static_cast<string>(node->inputs().types());
+  }
+
+  if (node->has_outputs()) {
+    this->outputs_values_ = static_cast<string>(node->outputs().values());
+    this->outputs_shapes_ = static_cast<string>(node->outputs().shapes());
+    this->outputs_types_ = static_cast<string>(node->outputs().types());
+  }
+
   this->num_ops_ = 0;
   uint64_t min_comm_size = 8;
 
@@ -150,6 +163,48 @@ uint32_t ETFeederNode::comm_tag() {
 
 string ETFeederNode::pg_name() {
   return pg_name_;
+}
+
+string ETFeederNode::get_inputs_values() const {
+  if (node_->has_inputs()) {
+    return inputs_values_;
+  }
+  return "";
+}
+
+string ETFeederNode::get_inputs_shapes() const {
+  if (node_->has_inputs()) {
+    return inputs_shapes_;
+  }
+  return "";
+}
+
+string ETFeederNode::get_inputs_types() const {
+  if (node_->has_inputs()) {
+    return inputs_types_;
+  }
+  return "";
+}
+
+string ETFeederNode::get_outputs_values() const {
+  if (node_->has_outputs()) {
+    return outputs_values_;
+  }
+  return "";
+}
+
+string ETFeederNode::get_outputs_shapes() const {
+  if (node_->has_outputs()) {
+    return outputs_shapes_;
+  }
+  return "";
+}
+
+string ETFeederNode::get_outputs_types() const {
+  if (node_->has_outputs()) {
+    return outputs_types_;
+  }
+  return "";
 }
 
 string ETFeederNode::pg_desc() {
