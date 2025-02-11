@@ -45,6 +45,8 @@ class ETFeederNode {
   std::string get_outputs_values() const;
   std::string get_outputs_shapes() const;
   std::string get_outputs_types() const;
+  std::string pg_desc();
+  std::string gpu_comp_res();
 
  private:
   void assign_attr_val(
@@ -79,6 +81,8 @@ class ETFeederNode {
   std::string outputs_values_;
   std::string outputs_shapes_;
   std::string outputs_types_;
+  std::string pg_desc_;
+  std::string gpu_comp_res_;
 };
 
 } // namespace Chakra
