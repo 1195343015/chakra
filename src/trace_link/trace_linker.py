@@ -6,11 +6,12 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Optional, Tuple
 
-from et_replay.execution_trace import (
+
+from .execution_trace import (
     EXECUTION_TRACE_PROCESS_ANNOTATION,
     EXECUTION_TRACE_THREAD_ANNOTATION,
 )
-from et_replay.execution_trace import Node as PyTorchOperator
+from .execution_trace import Node as PyTorchOperator
 from hta.analyzers.critical_path_analysis import CPEdgeType
 from hta.trace_analysis import TraceAnalysis
 
@@ -962,6 +963,11 @@ class TraceLinker:
                     **(
                         {"pg_name": gpu_op.pg_name}
                         if gpu_op.is_inter_gpu_comms_op() and gpu_op.pg_name is not None
+                        else {}
+                    ),
+                    **(
+                        {"pg_desc": gpu_op.pg_desc}
+                        if gpu_op.is_inter_gpu_comms_op() and gpu_op.pg_desc is not None
                         else {}
                     ),
                 }
