@@ -7,7 +7,13 @@ import networkx as nx
 from ...schema.protobuf.et_def_pb2 import GlobalMetadata, Node
 from ..third_party.utils.protolib import decodeMessage as decode_message
 from ..third_party.utils.protolib import openFileRd as open_file_rd
-
+from ...schema.protobuf.et_def_pb2 import (
+    COMM_COLL_NODE,
+    COMP_NODE,
+    COMM_SEND_NODE,
+    COMM_RECV_NODE,
+    GlobalMetadata,
+)
 
 def escape_label(label: str) -> str:
     """
@@ -48,10 +54,27 @@ def main() -> None:
     if args.output_filename.endswith((".pdf", ".dot")):
         f = graphviz.Digraph()
         decode_message(et, gm)
+        
         while decode_message(et, node):
             escaped_label = escape_label(node.name)
-            f.node(name=f"{node.id}", label=escaped_label, id=str(node.id), shape="record")
-
+            label = ''
+            if node.type == COMM_COLL_NODE:
+                color = 'black'
+                label = 'COMM'
+            elif node.type == COMP_NODE:
+                is_cpu_op = True
+                for attr in node.attr:
+                    if attr.name == 'is_cpu_op':
+                        is_cpu_op = attr.bool_val
+                if is_cpu_op:
+                    color = 'red'
+                    label = 'C'
+                else:
+                    color = 'blue'
+                    label = 'G'
+                    
+            f.node(name=f"{node.id}", label=label, id=str(node.id), shape="record", color=color)
+            # f.node(name=name, label=escaped_label, id=str(node.id), shape="record", color=color, overlap="false")
             # Handling data dependencies
             for data_dep_id in node.data_deps:
                 f.edge(str(data_dep_id), str(node.id), arrowhead="normal")  # using "normal" arrow for data_deps
